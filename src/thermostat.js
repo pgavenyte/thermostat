@@ -1,49 +1,74 @@
+'use strict';
+
 class Thermostat{
+
     constructor(){
-        this.temp = 20;
+        this.DEFAULT_TEMP = 20;
+        this.temp = this.DEFAULT_TEMP;
+        this.MINIMUM_TEMP = 10;
         this.powerSaving = true;
+        this.MAX_TEMP_PSM = 25;
+        this.MAX_TEMP = 32;
+        this.MEDIUM_USAGE = 18;
+        this.HIGH_USAGE = 25;
+    }
+
+    getCurrentTemp(){
+        return this.temp;
+    }
+
+    isMinTemp(){
+        return this.temp === this.MINIMUM_TEMP;
+    }
+
+    isMaxTemp(){
+        if (this.isPowerSavingOn() === false) {
+            return this.temp === this.MAX_TEMP;
+        }
+        return this.temp === this.MAX_TEMP_PSM;
     }
 
     up(){
-        if (this.powerSaving && this.temp <= 24){
-            this.temp++;
+        if (this.isMaxTemp()) {
+            return;   
         }
-        else if(!this.powerSaving && this.temp <= 31){
-            this.temp++;
-        }
+        this.temp++;
     }
 
     down(){
-        if (this.temp != 10){   
-            this.temp--;
+        if (this.isMinTemp()) {   
+            return;
         }
+        this.temp--;
     }
 
-    switchPowerSaving(){
-        if(this.powerSaving){
-            this.powerSaving = false;
-        }
-        else{
+    isPowerSavingOn(){
+        return this.powerSaving === true;
+    }
+
+    switchPowerSavingOff(){
+        return this.powerSaving = false;
+    }
+
+    switchPowerSavingOn(){
+        if (this.temp > this.MAX_TEMP_PSM){
             this.powerSaving = true;
-            if(this.temp > 25){
-                this.temp = 25;
-            }
+            this.temp = this.MAX_TEMP_PSM;
         }
+        return this.powerSaving = true;
     }
 
+   
     reset(){
-        this.temp = 20;
+        this.temp = this.DEFAULT_TEMP;
     }
 
     getEnergyUsage(){
-        if(this.temp < 18){
+        if(this.temp < this.MEDIUM_USAGE) {
             return "low-usage";
-        }
-        else if(this.temp <= 25){
+        } else if(this.temp <= this.HIGH_USAGE) {
             return "medium-usage";
         }
-        else{
             return "high-usage";
-        }
     }
 }

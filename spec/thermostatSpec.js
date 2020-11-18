@@ -1,3 +1,5 @@
+'use strict';
+
 describe('Thermostat', function(){
     var thermostat;
     beforeEach(function(){
@@ -6,61 +8,74 @@ describe('Thermostat', function(){
 
     describe('Starts at 20', function(){
         it ('thermostat has default temperature of 20', function(){
-            expect(thermostat.temp).toEqual(20);
+            expect(thermostat.getCurrentTemp()).toEqual(20);
         });
     });
 
     describe('Changing temp', function(){
         it ('increases the temperature', function(){
             thermostat.up();
-            expect(thermostat.temp).toEqual(21);
+            expect(thermostat.getCurrentTemp()).toEqual(21);
         });
 
         it ('decreases the temperature', function(){
             thermostat.down();
-            expect(thermostat.temp).toEqual(19);
+            expect(thermostat.getCurrentTemp()).toEqual(19);
         });
     });
 
     describe('Minimum temp', function(){
         it ('Prevents temp from going below 10', function(){
-            for(i=0; i<20; i++){    
+            for (var i=0; i<20; i++){    
                 thermostat.down();
             }
-            expect(thermostat.temp).toEqual(10);
+            expect(thermostat.getCurrentTemp()).toEqual(10);
         });
     });
 
     describe('Power saving mode', function(){
         it('is on by default', function(){
-            expect(thermostat.powerSaving).toEqual(true);
+            expect(thermostat.isPowerSavingOn()).toEqual(true);
         });
 
+        it('can switch PSM off', function() {
+            thermostat.switchPowerSavingOff();
+            expect(thermostat.isPowerSavingOn()).toEqual(false);
+        });
+
+        it('can switch PSM back on', function() {
+            thermostat.switchPowerSavingOff();
+            expect(thermostat.isPowerSavingOn()).toEqual(false);
+            thermostat.switchPowerSavingOn();
+            expect(thermostat.isPowerSavingOn()).toEqual(true);
+        });
+
+
         it('Sets maximum temp to 25 when on', function(){
-            for(i=0; i<10; i++){
+            for(var i=0; i<10; i++){
                 thermostat.up();
             }
-            expect(thermostat.temp).toEqual(25);
+            expect(thermostat.getCurrentTemp()).toEqual(25);
         });
 
         it('Sets maximum temp to 32 when off', function(){
-            thermostat.switchPowerSaving();
+            thermostat.switchPowerSavingOff();
 
-            for(i=0; i<15; i++){
+            for(var i=0; i<15; i++){
                 thermostat.up();
             }
-            expect(thermostat.temp).toEqual(32);
+            expect(thermostat.getCurrentTemp()).toEqual(32);
         });
 
         it('Limits temp back to 25 when power saving turned back on', function(){
-            thermostat.switchPowerSaving();
+            thermostat.switchPowerSavingOff();
 
-            for(i=0; i<15; i++){
+            for(var i=0; i<15; i++){
                 thermostat.up();
             }
 
-            thermostat.switchPowerSaving();
-            expect(thermostat.temp).toEqual(25);
+            thermostat.switchPowerSavingOn();
+            expect(thermostat.getCurrentTemp()).toEqual(25);
         })
     });
 
@@ -69,14 +84,14 @@ describe('Thermostat', function(){
             thermostat.up();
             thermostat.reset();
 
-            expect(thermostat.temp).toEqual(20);
+            expect(thermostat.getCurrentTemp()).toEqual(20);
         });
     });
 
     describe('Energy usage', function(){
         it ('returns low-usage if temp less than 18', function(){
 
-            for(i=0; i<5; i++){
+            for(var i=0; i<5; i++){
                 thermostat.down();
             }
             expect(thermostat.getEnergyUsage()).toEqual("low-usage");
@@ -87,9 +102,9 @@ describe('Thermostat', function(){
         });
 
         it ('returns high-usage if temp greater than 25', function(){
-            thermostat.switchPowerSaving();
+            thermostat.powerSaving= false;
 
-            for(i=0; i<10; i++){
+            for(var i=0; i<10; i++){
                 thermostat.up();
             }
 
