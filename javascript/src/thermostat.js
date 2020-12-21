@@ -65,10 +65,10 @@ class Thermostat{
 
     getEnergyUsage(){
         if(this.temp < this.MEDIUM_USAGE) {
-            return "low-usage";
+            return "LOW";
         } else if(this.temp <= this.HIGH_USAGE) {
-            return "medium-usage";
+            return "MEDIUM";
         }
-            return "high-usage";
+            return "HIGH";
     }
 }

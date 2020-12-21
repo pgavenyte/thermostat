@@ -94,11 +94,11 @@ describe('Thermostat', function(){
             for(var i=0; i<5; i++){
                 thermostat.down();
             }
-            expect(thermostat.getEnergyUsage()).toEqual("low-usage");
+            expect(thermostat.getEnergyUsage()).toEqual("LOW");
         });
 
         it ('returns medium-usage if temp less than or equal to 25', function(){
-            expect(thermostat.getEnergyUsage()).toEqual("medium-usage");
+            expect(thermostat.getEnergyUsage()).toEqual("MEDIUM");
         });
 
         it ('returns high-usage if temp greater than 25', function(){
@@ -108,7 +108,7 @@ describe('Thermostat', function(){
                 thermostat.up();
             }
 
-            expect(thermostat.getEnergyUsage()).toEqual("high-usage");
+            expect(thermostat.getEnergyUsage()).toEqual("HIGH");
         });
     });
 });
