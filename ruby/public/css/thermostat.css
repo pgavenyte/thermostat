@@ -1,0 +1,36 @@
+body {
+background-color: orange;
+text-align: center;
+}
+
+.LOW {
+  color: white;
+  font-weight: bold;
+  background-color: green;
+  
+}
+
+.MEDIUM {
+  color: white;
+  font-weight: bold;
+  background-color: black;
+}
+
+.HIGH {
+  color: white;
+  font-weight: bold;
+  background-color: red;
+}
+
+div {
+  width: 100px;
+  margin: auto;
+}
+
+button:hover{
+  background-color: orangered;
+  color: white;
+}
+
+
+
